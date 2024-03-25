@@ -1,6 +1,7 @@
 import ProductModel from '../database/models/product.model';
 import { Product } from '../types/Product';
 import ServiceResponse from '../types/ServiceResponse';
+import validateUserInput from './validations/validateUserInput';
 
 type ProductInput = {
   name: string;
@@ -9,6 +10,8 @@ type ProductInput = {
 };
 
 async function createProduct(product: ProductInput): Promise<ServiceResponse<Product>> {
+  const error = validateUserInput(product);
+  if (error) return { status: error.status, data: { message: error.message } };
   const { name, price, userId } = product;
 
   const newProduct = await ProductModel.create({ name, price, userId });

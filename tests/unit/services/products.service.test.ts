@@ -35,4 +35,22 @@ describe('ProductsService', function () {
     expect(response.data).to.be.deep.eq(products);
   });
 
+  it('should return a 400 status when a camp is empty', async function () {
+    const product = { name: '', price: '100', userId: 1 };
+
+    const response = await productService.createProduct(product);
+
+    expect(response.status).to.be.eq(400);
+    expect(response.data).to.be.deep.eq({ message: '"name" is not allowed to be empty' });
+  });
+
+  it('should return a 422 status when the product is invalid', async function () {
+    const product = { name: 'Product 1', price: '10', userId: 1 };
+
+    const response = await productService.createProduct(product);
+
+    expect(response.status).to.be.eq(422);
+    expect(response.data).to.be.deep.eq({ message: '"price" length must be at least 3 characters long' });
+  });
+
 });
