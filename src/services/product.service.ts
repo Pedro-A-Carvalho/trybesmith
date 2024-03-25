@@ -1,4 +1,5 @@
 import ProductModel from '../database/models/product.model';
+import UserModel from '../database/models/user.model';
 import { Product } from '../types/Product';
 import ServiceResponse from '../types/ServiceResponse';
 import validateUserInput from './validations/validateUserInput';
@@ -13,6 +14,8 @@ async function createProduct(product: ProductInput): Promise<ServiceResponse<Pro
   const error = validateUserInput(product);
   if (error) return { status: error.status, data: { message: error.message } };
   const { name, price, userId } = product;
+  const user = await UserModel.findByPk(userId);
+  if (!user) return { status: 422, data: { message: '"userId" not found\'' } };
 
   const newProduct = await ProductModel.create({ name, price, userId });
   return { status: 201, data: newProduct.dataValues };
