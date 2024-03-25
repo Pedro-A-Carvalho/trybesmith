@@ -14,8 +14,11 @@ async function createProduct(product: ProductInput): Promise<ServiceResponse<Pro
   const error = validateUserInput(product);
   if (error) return { status: error.status, data: { message: error.message } };
   const { name, price, userId } = product;
+  if (typeof userId !== 'number') { 
+    return { status: 422, data: { message: '"userId" must be a number' } }; 
+  }
   const user = await UserModel.findByPk(userId);
-  if (!user) return { status: 422, data: { message: '"userId" not found\'' } };
+  if (!user) return { status: 422, data: { message: '"userId" not found' } };
 
   const newProduct = await ProductModel.create({ name, price, userId });
   return { status: 201, data: newProduct.dataValues };

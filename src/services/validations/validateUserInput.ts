@@ -8,7 +8,8 @@ type InputProduct = {
 
 function validateUser(input: InputProduct) : { status: number, message: string } | undefined {
   const { error } = schemas.productSchema.validate(input);
-  if (error?.details[0].type === 'string.min') {
+  console.log(error?.details[0].type);
+  if (error?.details[0].type === 'string.min' || error?.details[0].type === 'string.base') {
     return { status: 422, message: error.message };
   }
   if (error) {
