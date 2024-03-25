@@ -1,9 +1,9 @@
 import productRoute from './product.route';
-// import userRoute from './user.routes';
-// import loginRoute from './login.routes';
+import userRoute from './user.route';
+// import loginRoute from './login.route';
 
 export default {
   productRoute,
-//   userRoute,
+  userRoute,
 //   loginRoute,  
 };
